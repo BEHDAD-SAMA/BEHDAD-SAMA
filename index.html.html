@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دعوت‌نامه عروسی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&family=Cinzel:wght@500;700&family=Aref+Ruqaa:wght@400;700&family=Lalezar&family=Markazi+Text:wght@400;600&family=Harmattan:wght@400;700&family=Reem+Kufi&family=Katibeh&family=Mirza:wght@400;700&family=Lateef&family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Rakkas&family=Changa:wght@400;600&family=Lemonada:wght@400;600&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root{--bg:#150b12;--panel:#22121c;--ink:#fbeef3;--neon:#ff4fa3;--gold:#ffd27a;--line:rgba(255,79,163,.35);
+--f-title:"Vazirmatn",Tahoma,sans-serif;--f-body:"Vazirmatn",Tahoma,sans-serif;--f-en:"Cinzel",Georgia,serif;
+--glow:0 0 4px rgba(255,255,255,.35),0 0 12px rgba(255,79,163,.75);
+--glow-big:0 0 6px #fff,0 0 18px var(--neon),0 0 40px var(--neon),0 0 76px #c2185b}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--f-body);font-weight:600;background:var(--bg);color:var(--ink);line-height:2;text-shadow:var(--glow)}
+body.locked{overflow:hidden;height:100vh}
+button,input,select{font-family:inherit}
+input,select,option{text-shadow:none}
+#bar{position:fixed;top:0;right:0;height:3px;width:0;background:var(--neon);box-shadow:0 0 10px var(--neon);z-index:70}
+#fx{position:fixed;inset:0;z-index:55;pointer-events:none}
+
+/* ---------- حرکت‌ها ---------- */
+@keyframes neonOn{0%,16%,22%,58%{opacity:.12;text-shadow:none}18%,26%,62%,100%{opacity:1}}
+@keyframes focus{from{opacity:0;filter:blur(14px);transform:scale(1.06)}to{opacity:1;filter:none;transform:none}}
+@keyframes beat{50%{transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.14) translate(-1.5%,1%)}}
+.js [data-rv]{opacity:0;filter:blur(10px);transform:translateY(14px);transition:opacity 1.1s,filter 1.1s,transform 1.1s}
+.js [data-rv].in{opacity:1;filter:none;transform:none}
+.js h2[data-rv].in{animation:neonOn 1.4s both}
+.words span{display:inline-block;transition:opacity .9s,filter .9s}
+.js .words span{opacity:0;filter:blur(8px)}
+.js .words.in span{opacity:1;filter:none}
+.js .hero .h{opacity:0}
+.live .hero .h{animation:focus 1.4s both;animation-delay:var(--d,0s)}
+
+/* ---------- پاکت ---------- */
+.stage{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#3d1830,var(--bg));transition:opacity .9s}
+.stage.gone{opacity:0;pointer-events:none}
+.env{position:relative;width:min(86vw,430px);aspect-ratio:3/2;perspective:900px;transition:transform 1s,opacity .9s;filter:drop-shadow(0 0 22px rgba(255,79,163,.45))}
+.env.zoom{transform:scale(2.4);opacity:0}
+.back{position:absolute;inset:0;background:#e6c9c9;border-radius:6px}
+.letter{position:absolute;left:5%;right:5%;top:8%;height:86%;background:#24131c;border:1px solid var(--neon);border-radius:4px;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+.letter b{font-family:var(--f-en);font-size:clamp(20px,6vw,30px);letter-spacing:.08em;text-shadow:var(--glow-big)}
+.env.pull .letter{transform:translateY(-52%)}
+.pocket{position:absolute;inset:0;z-index:3;background:#d3adb0;border-radius:6px;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
+.flap{position:absolute;inset:0 0 auto;height:58%;z-index:4;background:#c79ca2;border-radius:6px 6px 0 0;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s,z-index 0s .4s}
+.env.open .flap{transform:rotateX(180deg);z-index:1}
+.seal{position:absolute;z-index:5;left:50%;top:58%;width:66px;height:66px;transform:translate(-50%,-50%);border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#ff7fbd,#c2185b);font-size:28px;cursor:pointer;box-shadow:0 0 18px var(--neon);text-shadow:none;animation:beat 1.6s ease-in-out infinite;transition:opacity .3s}
+.seal:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.env.open .seal{opacity:0;pointer-events:none}
+.hint{position:absolute;bottom:11%;left:0;right:0;text-align:center;font-size:15px}
+
+/* ---------- بالای صفحه ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 18px;position:relative;overflow:hidden;isolation:isolate;background:#2a1020}
+.herobg{position:absolute;inset:0;z-index:-1;background:center 25%/cover no-repeat}
+.kb{animation:kb 26s ease-in-out infinite alternate}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(21,11,18,.35),rgba(21,11,18,.9) 85%),linear-gradient(transparent 55%,var(--bg))}
+.hero>*:not(.herobg){position:relative}
+.names{display:grid;margin:14px 0 6px;min-height:1.4em}
+.names>div{grid-area:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s}
+.names .en{font-family:var(--f-en);font-weight:700;font-size:clamp(40px,12vw,84px);line-height:1.25;letter-spacing:.1em;text-shadow:var(--glow-big)}
+.live .names .en{animation:neonOn 2.2s 1s both}
+.names .fa{font-family:var(--f-title);font-weight:700;font-size:clamp(44px,13vw,88px);line-height:1.4;text-shadow:var(--glow-big);opacity:0}
+.names .amp{font-size:.5em;color:var(--gold);line-height:1.2}
+.names.fa-on .en{opacity:0}.names.fa-on .fa{opacity:1;animation:neonOn 1.8s both}
+.names.both{display:block}.names.both>div{opacity:1!important}
+.fam{font-size:16px;color:var(--gold)}
+.lead{font-size:18px}
+.count{display:flex;gap:10px;margin-top:28px;direction:ltr}
+.count div{min-width:68px;padding:12px 6px;border:1px solid var(--neon);border-radius:14px;background:rgba(21,11,18,.55);box-shadow:0 0 16px rgba(255,79,163,.45),inset 0 0 12px rgba(255,79,163,.2)}
+.count b{display:block;font-size:30px;font-variant-numeric:tabular-nums}
+.count span{font-size:13px}
+.heart{position:absolute;bottom:-30px;font-size:20px;opacity:0;animation:rise linear infinite;text-shadow:none}
+@keyframes rise{10%{opacity:.7}100%{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+
+/* ---------- بخش‌ها ---------- */
+section{max-width:640px;margin:0 auto;padding:54px 22px;text-align:center}
+h2{font-family:var(--f-title);font-weight:700;font-size:34px;margin-bottom:10px;text-shadow:var(--glow-big)}
+.orn{font-size:26px;letter-spacing:.4em;text-shadow:none;padding:6px 0}
+.verse{font-size:18px;color:var(--gold);margin:14px 0}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ph{position:relative;aspect-ratio:3/4;border-radius:12px}
+.ph:first-child{grid-column:1/-1;aspect-ratio:4/5}
+.ph img{width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;transition:filter 1.8s,transform 1.8s,clip-path 1.5s cubic-bezier(.6,0,.2,1)}
+.ph::after{content:"";position:absolute;inset:0;border-radius:12px;border:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.75),0 0 26px rgba(255,79,163,.35);opacity:0;transition:opacity 1.2s .4s;pointer-events:none}
+.ph.in::after{opacity:1}
+.js .ph.e-blur img{filter:blur(28px) saturate(.5);transform:scale(1.15)}
+.js .ph.e-iris img{clip-path:circle(0% at 50% 50%);transform:scale(1.25)}
+.js .ph.e-slide img{clip-path:inset(0 0 0 100%)}
+.js .ph.e-spray:not(.in) img{opacity:0}
+.js .ph.in img{filter:none;transform:none;clip-path:circle(80% at 50% 50%)}
+.js .ph.e-slide.in img{clip-path:inset(0)}
+.ph .sp{position:absolute;inset:0;width:100%;height:100%;border-radius:12px}
+.details{max-width:none;background:var(--panel);border-block:1px solid var(--line)}
+.details>div{max-width:560px;margin:0 auto}
+.details p{font-size:18px}
+.btn{display:inline-block;margin:18px 4px 0;padding:12px 28px;border-radius:999px;border:1px solid var(--neon);background:rgba(255,79,163,.18);color:#fff;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 0 18px rgba(255,79,163,.55);text-shadow:var(--glow)}
+.btn:hover{background:rgba(255,79,163,.4)}
+.btn:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- تأیید حضور ---------- */
+.rsvp-wrap{max-width:none;position:relative;overflow:hidden;isolation:isolate;padding:80px 18px}
+.rsvp-wrap::before{content:"";position:absolute;inset:-30px;background:#2a1020 center/cover no-repeat;background-image:var(--guests);filter:blur(11px);z-index:-2}
+.rsvp-wrap::after{content:"";position:absolute;inset:0;background:rgba(21,11,18,.68);z-index:-1}
+form{max-width:450px;margin:22px auto 0;display:grid;gap:14px;text-align:right;padding:22px;border-radius:18px;background:rgba(21,11,18,.55);border:1px solid var(--neon);box-shadow:0 0 28px rgba(255,79,163,.4);backdrop-filter:blur(6px)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:15px}
+input[type=text],input[type=number]{width:100%;padding:12px 14px;border:0;border-radius:10px;font-size:16px;background:rgba(255,255,255,.95);color:#2a1a22;font-weight:400}
+.choice{display:grid;gap:10px}
+.choice label{display:block}
+.choice input{position:absolute;opacity:0}
+.choice span{display:block;text-align:center;padding:12px;border:1px solid rgba(255,255,255,.55);border-radius:10px;cursor:pointer;transition:background .3s,box-shadow .3s}
+.choice input:checked+span{border-color:var(--neon);background:rgba(255,79,163,.35);box-shadow:0 0 16px var(--neon)}
+.choice input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.thanks{display:none;margin-top:16px}
+footer{padding:28px;text-align:center;font-size:15px}
+
+/* ---------- موزیک و فونت ---------- */
+.fab{position:fixed;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--neon);background:rgba(21,11,18,.8);color:#fff;font-size:17px;cursor:pointer;display:none;box-shadow:0 0 14px rgba(255,79,163,.6)}
+#musicMsg{position:fixed;z-index:60;top:66px;left:14px;max-width:230px;padding:8px 12px;border-radius:10px;background:#fff;color:#2a1a22;font-size:13px;line-height:1.7;display:none;text-shadow:none}
+#music{top:max(14px,env(safe-area-inset-top));left:14px}
+#fontBtn{bottom:max(14px,env(safe-area-inset-bottom));left:14px}
+#fontPanel{position:fixed;z-index:60;bottom:68px;left:14px;display:none;gap:8px;padding:14px;border-radius:14px;background:#fff;color:#2a1a22;box-shadow:0 8px 30px rgba(0,0,0,.4);width:230px;font-size:14px;text-shadow:none}
+#fontPanel.show{display:grid}
+#fontPanel select{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px}
+@media (prefers-reduced-motion:reduce){.env,.letter,.flap,.stage,.names>div{transition-duration:.01s}.heart,.seal,.kb{animation:none}}
+</style>
+<style id="light">
+:root{--bg:#fff6f4;--panel:#ffeaee;--ink:#4a1730;--neon:#e0457b;--gold:#a8741a;--line:rgba(224,69,123,.35);
+--glow:0 0 6px rgba(255,255,255,.9),0 0 14px rgba(224,69,123,.25);
+--glow-big:0 0 4px #fff,0 0 12px rgba(255,255,255,.95),0 0 26px rgba(224,69,123,.55),0 0 50px rgba(255,150,190,.5)}
+.stage{background:radial-gradient(circle at 50% 40%,#fff,#ffd6e2)}
+.env{filter:drop-shadow(0 10px 26px rgba(224,69,123,.35))}
+.back{background:#f6dcd6}.pocket{background:#efc9cb}.flap{background:#e8b9bf}
+.letter{background:#fffaf8}
+.hero{background:#f8dbe4}
+.hero::before{background:linear-gradient(transparent 68%,var(--bg)),linear-gradient(rgba(255,244,246,.56),rgba(255,244,246,.6))}
+.count div{background:rgba(255,255,255,.66);box-shadow:0 0 16px rgba(224,69,123,.25),inset 0 0 12px rgba(255,255,255,.7)}
+.ph::after{box-shadow:0 14px 34px rgba(110,35,65,.3),0 0 22px rgba(224,69,123,.28)}
+.details{background:#fff}
+.rsvp-wrap::before{background-color:#f8dbe4}
+.rsvp-wrap::after{background:rgba(255,244,246,.72)}
+form{background:rgba(255,255,255,.64);box-shadow:0 0 26px rgba(224,69,123,.25)}
+.choice span{border-color:rgba(74,23,48,.35);background:rgba(255,255,255,.75)}
+.choice input:checked+span{background:rgba(224,69,123,.2);box-shadow:0 0 14px rgba(224,69,123,.5)}
+.btn{background:var(--neon);color:#fff;text-shadow:none;box-shadow:0 6px 18px rgba(224,69,123,.4)}
+.btn:hover{background:#c93469}
+.fab{background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 0 12px rgba(224,69,123,.4)}
+.heart,.seal{text-shadow:none}
+.band{max-width:none;position:relative;overflow:hidden;isolation:isolate;padding:84px 22px}
+.band .inner{max-width:640px;margin:0 auto;text-align:center}
+.sbg{position:absolute;inset:-20px;z-index:-2;background:#f8dbe4 center 30%/cover no-repeat;transition:filter 2.2s,transform 2.6s}
+.band::after{content:"";position:absolute;inset:0;background:rgba(255,246,248,.6);z-index:-1}
+.js .sbg{filter:blur(24px);transform:scale(1.12)}
+.js .band.in .sbg{filter:blur(1px);transform:none}
+.details.band{background:none;border-block:0}
+.details>.sbg{max-width:none;margin:0}
+.details>.inner{max-width:560px}
+.band p,.band h2{text-shadow:0 0 6px #fff,0 0 14px #fff,0 0 28px rgba(224,69,123,.4)}
+.band .verse{color:#8a5a10}
+.det{margin-top:72px}
+.det p{font-size:18px}
+</style>
+</head>
+<body class="locked">
+<div id="bar"></div>
+<canvas id="fx"></canvas>
+<audio id="audio" preload="auto"></audio>
+<div id="musicMsg"></div>
+<button class="fab" id="music" type="button" aria-label="پخش یا قطع موزیک">♪</button>
+<button class="fab" id="fontBtn" type="button" aria-label="تغییر فونت">Aa</button>
+<div id="fontPanel">
+  <label>فونت عنوان‌ها<select id="selTitle"></select></label>
+  <label>فونت متن‌ها<select id="selBody"></select></label>
+  <small>اسم فونت انتخابی را در config.js بنویسید.</small>
+</div>
+
+<div class="stage" id="stage">
+  <div class="env" id="env">
+    <div class="back"></div>
+    <div class="letter"><b id="lNames"></b></div>
+    <div class="pocket"></div><div class="flap"></div>
+    <button class="seal" id="seal" type="button" aria-label="باز کردن پاکت">❤️</button>
+  </div>
+  <div class="hint" id="hint"></div>
+</div>
+
+<header class="hero" id="hero">
+  <div class="herobg" id="herobg"></div>
+  <div id="kicker" class="lead h" style="--d:.2s"></div>
+  <h1 class="names h" id="names" style="--d:.5s">
+    <div class="en"><span id="en1"></span><span class="amp">&amp; </span><span id="en2"></span></div>  </h1>
+  <div class="fam h" id="fam" style="--d:1.1s"></div>
+  <div id="dateText" class="lead h" style="--d:1.4s"></div>
+  <div class="count h" id="count" style="--d:1.7s">
+    <div><b id="cs">۰</b><span>ثانیه</span></div>
+    <div><b id="cm">۰</b><span>دقیقه</span></div>
+    <div><b id="ch">۰</b><span>ساعت</span></div>
+    <div><b id="cd">۰</b><span>روز</span></div>
+  </div>
+</header>
+
+<section class="band" id="inviteBand">
+  <div class="sbg" id="inviteBg"></div>
+  <div class="inner">
+  <div class="orn" data-rv>💍 ❤️ 💍</div>
+  <h2 data-rv>دعوت‌نامه</h2>
+  <p class="lead words" id="message"></p>
+  <p class="verse" id="verse" data-rv></p>
+  </div>
+  <div class="inner det">
+    <div class="orn" data-rv>💐 ❤️ 💐</div>
+    <h2 data-rv>زمان و مکان</h2>
+    <p id="dText" data-rv></p><p id="timeText" data-rv></p>
+    <p id="place" style="font-weight:700" data-rv></p>
+    <p id="address" data-rv></p>
+    <div data-rv><a class="btn" id="mapBtn" target="_blank" rel="noopener">📍 مسیریابی</a></div>
+  </div>
+</section>
+
+<section class="rsvp-wrap">
+  <div class="orn" data-rv>💍 ❤️ 💍</div>
+  <h2 data-rv>تأیید حضور</h2>
+  <p class="lead" data-rv>خواهشمند است حضور یا عدم حضور خود را اعلام فرمایید.</p>
+  <form id="rsvp" data-rv>
+    <div class="row">
+      <div><label for="fn">نام</label><input type="text" id="fn" required autocomplete="given-name"></div>
+      <div><label for="ln">نام خانوادگی</label><input type="text" id="ln" required autocomplete="family-name"></div>
+    </div>
+    <div class="choice">
+      <label><input type="radio" name="ans" value="yes" checked><span>💍 با کمال مسرت حضور خواهم یافت</span></label>
+      <label><input type="radio" name="ans" value="no"><span>🕊️ متأسفانه امکان حضور ندارم</span></label>
+    </div>
+    <div id="guestsBox"><label for="guests">تعداد همراهان محترم (با احتساب خودتان)</label><input type="number" id="guests" min="1" max="10" value="1"></div>
+    <button class="btn" type="submit">❤️ ارسال پاسخ</button>
+  </form>
+  <p class="thanks" id="thanks">از لطف و محبت شما سپاسگزاریم. پاسخ شما ارسال شد. 🕊️</p>
+</section>
+
+<footer id="foot"></footer>
+
+<script>
+const $ = id => document.getElementById(id), C = CONFIG;
+const fa = n => Number(n).toLocaleString("fa-IR");
+const set = (id, v) => $(id).textContent = v;
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!RM) document.documentElement.classList.add("js");
+
+/* متن‌ها */
+set("en1", C.namesEn[0]); set("en2", C.namesEn[1]); set("lNames", C.namesEn[0] + " & " + C.namesEn[1]);
+set("fam", C.families); set("kicker", C.kicker); set("hint", C.envelopeHint);
+set("verse", C.verse); set("foot", C.footer);
+set("dateText", C.dateText); set("dText", C.dateText); set("timeText", C.timeText);
+set("place", C.place); set("address", C.address);
+$("message").innerHTML = C.message.split(" ").map((w, i) => '<span style="transition-delay:' + i * 60 + 'ms">' + w + "</span>").join(" ");
+$("mapBtn").href = C.mapUrl;
+document.title = "دعوت‌نامه عروسی " + C.namesFa[0] + " و " + C.namesFa[1];
+
+/* عکس‌ها */
+if (C.coupleBg) { $("herobg").style.backgroundImage = "url('" + C.coupleBg + "')"; if (C.kenBurns) $("herobg").classList.add("kb"); }
+if (C.guestsBg) document.documentElement.style.setProperty("--guests", "url('" + C.guestsBg + "')");
+const MID = C.midBg ?? "photos/2.jpg";
+if (MID) $("inviteBg").style.backgroundImage = "url('" + MID + "')";
+
+/* اسپری رنگ: پرده‌ای که با اسپری پاک می‌شود و عکس زیرش پیدا می‌شود */
+function spray(fig) {
+  const r = fig.getBoundingClientRect(), k = Math.min(devicePixelRatio || 1, 2), cv = document.createElement("canvas");
+  cv.width = r.width * k; cv.height = r.height * k; cv.className = "sp"; fig.appendChild(cv);
+  const g = cv.getContext("2d"), W = r.width, H = r.height, rows = 5, T = 2800, t0 = performance.now();
+  g.scale(k, k); g.fillStyle = "#fff6f4"; g.fillRect(0, 0, W, H); g.globalCompositeOperation = "destination-out";
+  (function f(now) {
+    const p = Math.min((now - t0) / T, 1), row = Math.min(Math.floor(p * rows), rows - 1), q = p * rows - row;
+    const x = (row % 2 ? 1 - q : q) * W, y = (row + .5) / rows * H;
+    for (let i = 0; i < 380; i++) {
+      const a = Math.random() * 6.283, d = Math.abs((Math.random() + Math.random() + Math.random()) / 3 - .5) * 2 * (H / rows) * .95;
+      g.globalAlpha = .5 + Math.random() * .5; g.beginPath(); g.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, .6 + Math.random() * 1.9, 0, 6.283); g.fill();
+    }
+    if (p < 1) requestAnimationFrame(f); else { cv.style.transition = "opacity .9s"; cv.style.opacity = 0; setTimeout(() => cv.remove(), 1000); }
+  })(t0);
+}
+
+/* ظاهر شدن با اسکرول */
+const io = new IntersectionObserver(es => es.forEach(en => {
+  if (!en.isIntersecting) return;
+  const el = en.target; el.classList.add("in"); io.unobserve(el);
+  if (el.dataset.fx === "spray" && !RM) spray(el);
+}), { threshold: .25 });
+document.querySelectorAll("[data-rv],.words,.band").forEach(el => io.observe(el));
+addEventListener("scroll", () => { $("bar").style.width = scrollY / (document.body.scrollHeight - innerHeight || 1) * 100 + "%"; }, { passive: true });
+
+/* فونت‌ها */
+const FONTS = ["Vazirmatn","Aref Ruqaa","Lalezar","Markazi Text","Harmattan","Reem Kufi","Katibeh","Mirza","Lateef","Amiri","Noto Naskh Arabic","Rakkas","Changa","Lemonada"];
+function applyFonts() {
+  const r = document.documentElement.style;
+  r.setProperty("--f-title", '"' + C.fontTitle + '", Vazirmatn, sans-serif');
+  r.setProperty("--f-body", '"' + C.fontBody + '", Vazirmatn, Tahoma, sans-serif');
+}
+function fillSel() {
+  [["selTitle","fontTitle"],["selBody","fontBody"]].forEach(([id, k]) => {
+    const s = $(id); s.innerHTML = "";
+    FONTS.forEach(f => { const o = new Option(f, f); if (f === C[k]) o.selected = true; s.add(o); });
+    s.onchange = () => { C[k] = s.value; applyFonts(); };
+  });
+}
+if (C.customFont.name && C.customFont.file) new FontFace(C.customFont.name, "url(" + C.customFont.file + ")").load().then(f => { document.fonts.add(f); FONTS.unshift(C.customFont.name); fillSel(); }).catch(() => {});
+applyFonts(); fillSel();
+if (C.showFontPicker) { $("fontBtn").style.display = "block"; $("fontBtn").onclick = () => $("fontPanel").classList.toggle("show"); }
+
+/* شمارنده */
+const target = new Date(C.dateISO).getTime();
+function tick() {
+  const d = Math.floor((target - Date.now()) / 1000);
+  if (d <= 0) { $("count").innerHTML = '<div style="padding:14px 24px">امروز روز پیوند ماست 💍</div>'; clearInterval(timer); return; }
+  set("cd", fa(Math.floor(d / 86400))); set("ch", fa(Math.floor(d % 86400 / 3600)));
+  set("cm", fa(Math.floor(d % 3600 / 60))); set("cs", fa(d % 60));
+  if (!RM) $("cs").animate([{ transform: "scale(1.22)", opacity: .55 }, { transform: "none", opacity: 1 }], { duration: 380 });
+}
+tick(); const timer = setInterval(tick, 1000);
+
+/* ذرات طلایی و قلب‌های شناور */
+const fx = $("fx"), g2 = fx.getContext("2d"); let P = [], locked = true;
+function sizeFx() { fx.width = innerWidth; fx.height = innerHeight; }
+addEventListener("resize", sizeFx); sizeFx();
+function spawn(x, y, burst) {
+  const a = Math.random() * 6.283, s = burst ? 1.5 + Math.random() * 5 : .1 + Math.random() * .35;
+  P.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (burst ? 0 : .15), r: 1 + Math.random() * 2.2, age: 0, life: burst ? 60 + Math.random() * 50 : 260 + Math.random() * 300, c: Math.random() < .7 ? "214,158,52" : "236,100,150" });
+}
+function loop() {
+  g2.clearRect(0, 0, fx.width, fx.height); g2.globalCompositeOperation = "source-over";
+  if (C.sparkles && P.length < 80 && Math.random() < .35) spawn(Math.random() * fx.width, Math.random() * fx.height, false);
+  P = P.filter(p => p.age++ < p.life);
+  P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vx *= .985; p.vy *= .985;
+    const a = Math.sin(p.age / p.life * Math.PI); g2.fillStyle = "rgba(" + p.c + "," + a * .9 + ")";
+    g2.beginPath(); g2.arc(p.x, p.y, p.r * (.6 + a * .6), 0, 6.283); g2.fill(); });
+  requestAnimationFrame(loop);
+}
+if (!RM) {
+  loop();
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement("span"); h.className = "heart"; h.textContent = i % 3 ? "❤️" : "💍";
+    h.style.left = Math.random() * 94 + "%"; h.style.animationDuration = 9 + Math.random() * 8 + "s"; h.style.animationDelay = Math.random() * 8 + "s";
+    $("hero").appendChild(h);
+  }
+}
+
+/* موزیک: فقط یک بخش، با شروع و پایان نرم */
+const audio = $("audio"); audio.src = C.music; audio.loop = false;
+let playing = false, fadeTimer = null;
+const endT = () => C.musicEnd > 0 ? C.musicEnd : (isFinite(audio.duration) ? audio.duration : 1e9);
+audio.onerror = () => { if (C.showMusicErrors) { $("musicMsg").textContent = "فایل «" + C.music + "» پیدا نشد یا قابل پخش نیست. اسم و جای آن را بررسی کنید."; $("musicMsg").style.display = "block"; } };
+audio.onended = () => { if (playing) { audio.currentTime = C.musicStart; audio.play().catch(() => {}); } };
+function setMusic(on) {
+  playing = on; $("music").style.opacity = on ? 1 : .55; clearInterval(fadeTimer);
+  if (!on) { audio.pause(); return; }
+  const go = () => {
+    audio.currentTime = C.musicStart; audio.volume = 0;
+    audio.play().then(() => {
+      fadeTimer = setInterval(() => {
+        const t = audio.currentTime, E = endT();
+        if (t >= E - .05 || t < C.musicStart - .5) { audio.currentTime = C.musicStart; return; }
+        let v = 1;
+        if (t < C.musicStart + C.musicFadeIn) v = (t - C.musicStart) / C.musicFadeIn;
+        if (t > E - C.musicFadeOut) v = Math.min(v, (E - t) / C.musicFadeOut);
+        audio.volume = Math.max(0, Math.min(1, v)) * C.musicVolume;
+      }, 50);
+    }).catch(() => { playing = false; $("music").style.opacity = .55; });
+  };
+  audio.readyState >= 1 ? go() : audio.addEventListener("loadedmetadata", go, { once: true });
+}
+$("music").onclick = () => setMusic(!playing);
+$("music").style.opacity = .55;
+
+/* باز شدن پاکت */
+$("seal").onclick = () => {
+  const env = $("env"), b = $("seal").getBoundingClientRect();
+  setMusic(true); $("hint").style.display = "none"; env.classList.add("open");
+  if (!RM) for (let i = 0; i < 110; i++) spawn(b.left + b.width / 2, b.top + b.height / 2, true);
+  setTimeout(() => env.classList.add("pull"), RM ? 0 : 700);
+  setTimeout(() => env.classList.add("zoom"), RM ? 0 : 1800);
+  setTimeout(() => {
+    $("stage").classList.add("gone"); document.body.classList.remove("locked"); document.body.classList.add("live");
+    $("music").style.display = "block"; locked = false; scrollTo(0, 0);
+  }, RM ? 0 : 2500);
+  setTimeout(() => $("stage").remove(), RM ? 100 : 3500);
+};
+
+/* تأیید حضور */
+const ans = () => document.querySelector("input[name=ans]:checked").value;
+document.querySelectorAll("input[name=ans]").forEach(r => r.onchange = () => $("guestsBox").style.display = ans() === "yes" ? "" : "none");
+$("rsvp").onsubmit = e => {
+  e.preventDefault();
+  const name = $("fn").value.trim() + " " + $("ln").value.trim();
+  const text = ans() === "yes"
+    ? "با سلام و احترام، اینجانب " + name + " با تشکر از دعوت شما، به همراه " + $("guests").value + " نفر (با احتساب خودم) با کمال مسرت در مراسم حضور خواهم یافت."
+    : "با سلام و احترام، اینجانب " + name + " ضمن سپاس از دعوت شما، متأسفانه امکان حضور در مراسم را ندارم و برای شما آرزوی خوشبختی دارم.";
+  const t = encodeURIComponent(text), r = C.rsvp;
+  window.open((r.via === "telegram" ? "https://t.me/" + r.target + "?text=" : "https://wa.me/" + r.target + "?text=") + t, "_blank");
+  $("thanks").style.display = "block";
+};
+</script>
+</body>
+</html>
